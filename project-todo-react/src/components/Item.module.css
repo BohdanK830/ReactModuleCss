@@ -1,0 +1,131 @@
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 16px;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-left: 4px solid var(--border-light);
+  border-radius: 12px;
+  box-shadow: var(--shadow-item);
+  transition: all 0.2s ease;
+}
+
+.item:hover {
+  border-color: #cbd5e1;
+  box-shadow: var(--shadow-item-hover);
+  transform: translateY(-1px);
+}
+
+.priorityLow {
+  border-left-color: #10b981;
+}
+
+.priorityNormal {
+  border-left-color: #f59e0b;
+}
+
+.priorityHigh {
+  border-left-color: #ef4444;
+}
+
+.completed {
+  background: #f8fafc;
+  opacity: 0.6;
+}
+
+.completed .text {
+  text-decoration: line-through;
+  color: #94a3b8;
+}
+
+.overdue {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.25);
+}
+
+.leftPart {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #0f172a;
+  word-break: break-word;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 0.75rem;
+}
+
+.priorityBadge {
+  padding: 1px 7px;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.bgLow {
+  background-color: #10b981;
+}
+
+.bgNormal {
+  background-color: #f59e0b;
+}
+
+.bgHigh {
+  background-color: #ef4444;
+}
+
+.dateText {
+  color: #64748b;
+}
+
+.overdueBadge {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  padding: 1px 7px;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+.deleteButton {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fee2e2;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.deleteButton:hover {
+  background: #ef4444;
+  color: #ffffff;
+  border-color: #ef4444;
+}

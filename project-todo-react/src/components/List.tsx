@@ -1,6 +1,7 @@
 import React from 'react';
 import type { ToDo } from '../types';
 import { Item } from './Item';
+import styles from './List.module.css';
 
 interface ListProps {
     todos: ToDo[];
@@ -10,7 +11,7 @@ interface ListProps {
 
 export const List: React.FC<ListProps> = ({ todos, onToggle, onDelete }) => {
     return (
-        <div className="todo-container">
+        <div className={styles.todoContainer}>
             {todos.map((todo) => (
                 <Item key={todo.id} todo={todo} onToggle={onToggle} onDelete={onDelete} />
             ))}

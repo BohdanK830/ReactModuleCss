@@ -1,18 +1,33 @@
-import React, { useEffect, useState } from 'react'
-import type {ToDo, SortOrder} from './types'
+import { useEffect, useState } from 'react'
+import type {ToDo, SortOrder, Priority} from './types'
+import {Header} from './components/Header'
+import {Counter} from './components/Counter'
+import {Form} from './components/Form'
 import {List} from './components/List'
+import styles from './App.module.css'
+
 
 function App() {
   const [todos, setTodos] = useState<ToDo[]>(() => {
     const storedTodos = localStorage.getItem('todos');
-    return storedTodos ? JSON.parse(storedTodos) : [];
+    if (!storedTodos) {
+      return [];
+    }
+    return JSON.parse(storedTodos).map((todo: ToDo) => ({
+      ...todo,
+      priority: todo.priority || 'medium',
+      date: todo.date || '',
+    }));
   });
-  const [inputValue, setInputValue] = useState('');
+
   const [sortOrder, setSortOrder] = useState<SortOrder>('none');
+
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
+
   const completedCount = todos.filter((t) => t.completed).length
+
   const displayedTodos = [...todos].sort((a, b) => {
     if (sortOrder === 'asc') {
       return a.text.localeCompare(b.text);
@@ -22,19 +37,16 @@ function App() {
     }
     return 0;
   });
-  const handleAddTodo = (e: React.FormEvent) => {
-    e.preventDefault();
-    const trimmedValue = inputValue.trim();
-    if (trimmedValue === '') {
-      return;
-    }
+
+  const handleAddTodo = (text: string, priority: Priority, date: string) => {
     const newTodo: ToDo = {
       id: Date.now(),
-      text: trimmedValue,
+      text,
       completed: false,
+      priority,
+      date
     };
       setTodos((prev) => [...prev, newTodo]);
-      setInputValue('');
     }
   const handleToggleTodo = (id: number) => {
     setTodos((prev) =>
@@ -48,34 +60,22 @@ function App() {
   };
   
   return (
-    <main className="todo-app">
-      <header className="app-header">
-        <h1>To-Do List</h1>
-      </header>
-      <form className="controls" onSubmit={handleAddTodo}>
-        <input
-          id="todo-input"
-          type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          placeholder="Add a new task"
-        />
-        <button id="add-button" type="submit">Add</button>
-      </form>
-      <div className="controls">
-        <button className="sort-button" onClick={() => setSortOrder('asc')}>Sort A-Z</button>
-        <button className="sort-button" onClick={() => setSortOrder('desc')}>Sort Z-A</button>
-        <button className="sort-button" onClick={() => setSortOrder('none')}>Clear Sort</button>
+    <main className={styles.app}>
+      <Header />
+      <Form onAddTodo={handleAddTodo} />
+      <div className={styles.controls}>
+        <button className={styles.sortButton} onClick={() => setSortOrder('asc')}>
+          Sort A-Z
+        </button>
+        <button className={styles.sortButton} onClick={() => setSortOrder('desc')}>
+          Sort Z-A
+        </button>
+        <button className={styles.sortButton} onClick={() => setSortOrder('none')}>
+          Clear Sort
+        </button>
       </div>
-      <div className="counter">
-        <span className="counter-label">{completedCount} completed out of</span>
-        <span id="todo-count">{todos.length}</span>
-      </div>
-      <List
-        todos={displayedTodos}
-        onToggle={handleToggleTodo}
-        onDelete={handleDeleteTodo}
-      />
+      <Counter total={todos.length} completed={completedCount} />
+      <List todos={displayedTodos} onToggle={handleToggleTodo} onDelete={handleDeleteTodo} />
     </main>
   )
 }
